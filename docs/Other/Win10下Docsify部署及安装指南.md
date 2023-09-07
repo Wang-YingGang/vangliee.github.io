@@ -1,3 +1,66 @@
+# Win10下Docsify部署及安装指南
+---
+
+## 检查Node.js版本
+
+**使用cmd检查nodejs和npm的版本**
+
+```
+nodejs -v
+```
+
+**nodejs版本要大于18.0.0**
+
+```
+npm -v
+```
+
+**npm版本要大于10.0.0**
+
+> 我在安装的时候在初始化docsify的时候会出现找不到指令,我升级了nodejs和npm的版本之后,就ok了
+
+---
+
+## Node.js 安装配置
+
+[nodejs下载地址](https://nodejs.cn/download/)
+
+## 本地安装运行docsify
+
+**直接使用下面命令安装**
+
+```
+npm i docsify-cli -g
+```
+
+> 这里我也出现了问题,我嫌速度慢,使用了淘宝镜像,导致安装后依然不能初始化
+
+> 下面是淘宝镜像
+
+```
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+```
+
+**安装完成后初始化docsify,创建一个默认模板**
+
+```
+docsify init D:/docsify
+```
+**创建完成后会提示你执行 docsify serve D:/docsify**
+
+![](../../images/docsify%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8/1.png)
+
+**运行创建的模板库**
+
+```
+docsify serve D:/docsify
+```
+
+## 修改样式
+
+**html模板文件(可以直接替换)**
+
+```
 <!DOCTYPE html>
 <html lang="en">
 
@@ -64,3 +127,52 @@
 </body>
 
 </html>
+```
+
+> 可以修改这里的参数改变样式
+
+**_coverpage.md(封面样式)**
+
+> 内容如下:
+
+```
+# 标题
+
+[主页](/README.md)
+```
+
+> 通过修改index.html内的coverpage=true来开启,然后在根目录创建_coverpage.md
+
+**_sidebar.md(侧边栏样式)**
+
+> 内容如下:
+
+```
+* Other
+  * [docsify的安装及使用](/docs/Other/docsify的安装及使用.md)
+```
+
+> 通过修改index.html内的sidebar=true来开启,然后在根目录创建_sidebar.md
+
+**_navbar.md(导航栏样式)**
+
+> 内容如下:
+
+```
+* 关于本人
+  * [Github地址](https://github.com/Wang-YingGang)
+
+* 友情链接
+  * [Docsify](https://docsify.js.org/#/)
+  * [博客园](https://www.cnblogs.com/)
+```
+
+> 通过修改index.html内的navbar=true来开启,然后在根目录创建_navbar.md
+
+**修改完毕打开浏览器访问**
+
+```
+http://localhost:3000/
+```
+
+> 完成!
