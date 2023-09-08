@@ -1,3 +1,1 @@
-# 文档库
-
-[主页](/README.md)
+[前往](/README.md)
