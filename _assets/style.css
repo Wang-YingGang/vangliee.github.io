@@ -1,0 +1,355 @@
+/* ==========================================================================
+   站点样式：在 docsify 5 core 主题之上做覆盖
+   docsify 5 的颜色 / 字体 / 间距全部通过 CSS 变量暴露，优先改变量，
+   少数结构性样式才写选择器，升级主题时不容易炸。
+   ========================================================================== */
+
+/* 1. 设计变量
+   ========================================================================== */
+:root {
+    /* 品牌色：会连带派生 --theme-color-1 ~ -8 */
+    --theme-color: #2f6fed;
+
+    /* 中文字体栈：优先系统 UI 字体，避免加载外部字体 */
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    --font-family-mono: "JetBrains Mono", "Cascadia Code", "Fira Code", Consolas,
+        "Courier New", monospace;
+
+    /* 阅读体验：行高放松一点，正文宽度控制在 720px 上下 */
+    --font-size: 16px;
+    --font-weight: 400;
+    --line-height: 1.75;
+    --content-max-width: 720px;
+    --content-margin-inline: 40px;
+    --margin-block: 1.05rem;
+
+    --border-radius: 10px;
+    --navbar-height: 3.75em;
+    --sidebar-width: 264px;
+
+    --link-color: var(--theme-color);
+    --heading-line-height: 1.4;
+}
+
+/* 深色模式：只翻转颜色变量，其余样式自动跟随 */
+html[data-theme="dark"] {
+    color-scheme: dark;
+
+    --color-bg: #14171c;
+    --color-text: #c9d1d9;
+    --theme-color: #6ea0ff;
+
+    /* 亮底模式下由黑混合出的强调色，在深色下要反过来 */
+    --strong-color: color-mix(in srgb, var(--color-text), white 32%);
+    --mark-bg: #fde047;
+    --mark-color: var(--color-bg);
+    --codeblock-comment: #6b7d8f;
+}
+
+/* 2. 基础排版
+   ========================================================================== */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.markdown-section :is(p, li, dd, td) {
+    line-height: 1.85;
+}
+
+.markdown-section :is(h1, h2, h3, h4) {
+    letter-spacing: 0.01em;
+}
+
+.markdown-section h1 {
+    padding-bottom: 0.4em;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.markdown-section h2 {
+    margin-top: 2.4em;
+}
+
+/* 正文首段稍微强调一点 */
+.markdown-section > p:first-of-type {
+    color: var(--color-mono-7);
+    font-size: 1.02em;
+}
+
+/* 链接下划线细一点，悬停才变粗 */
+.markdown-section a:not(.button) {
+    text-underline-offset: 3px;
+    transition: color 0.15s ease;
+}
+
+/* 3. 导航栏 & 侧边栏
+   ========================================================================== */
+.app-nav {
+    align-items: center;
+}
+
+.app-nav ul li a {
+    font-weight: 500;
+}
+
+.app-nav ul li a:hover,
+.app-nav ul li a.active {
+    color: var(--theme-color);
+}
+
+/* v5 默认在右上角挂一个 GitHub 角标，会和导航栏挤在一起；
+   导航栏里已经有入口，这里直接隐藏 */
+.github-corner {
+    display: none;
+}
+
+.sidebar-nav {
+    padding-block: 0.5rem;
+}
+
+.sidebar-nav > ul > li > p.group-title {
+    margin-top: 1.2em;
+    font-size: 0.82em;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.sidebar-nav a {
+    border-radius: 6px;
+    transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.sidebar-nav a:hover {
+    color: var(--theme-color);
+}
+
+/* 4. 封面
+   ========================================================================== */
+.cover {
+    --cover-bg: radial-gradient(120% 120% at 50% 0%, #e7eeff 0%, #f6f8fc 48%, #ffffff 100%);
+    --cover-color: var(--color-mono-6);
+    --cover-bg-overlay: none;
+}
+
+html[data-theme="dark"] .cover {
+    --cover-bg: radial-gradient(120% 120% at 50% 0%, #1b2434 0%, #12151b 55%, #0f1116 100%);
+}
+
+.cover-main h1 {
+    letter-spacing: 0.06em;
+}
+
+.cover-main blockquote {
+    max-width: 30em;
+    margin-inline: auto;
+    color: var(--color-mono-6);
+    font-size: 1.05rem;
+    letter-spacing: 0.05em;
+}
+
+.cover-main p a:not(.anchor) {
+    display: inline-block;
+    margin: 0.35em 0.3em;
+    padding: 0.55em 1.55em;
+    border: 2px solid var(--theme-color);
+    border-radius: 100vh;
+    color: var(--theme-color);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.cover-main p a:not(.anchor):hover {
+    background: var(--theme-color);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+/* 第一个按钮：实心主按钮 */
+.cover-main p a:first-child {
+    background: var(--theme-color);
+    color: #fff;
+    box-shadow: 0 6px 18px -8px var(--theme-color);
+}
+
+.cover-main p a:first-child:hover {
+    filter: brightness(1.06);
+}
+
+/* 5. 代码块
+   ========================================================================== */
+.markdown-section pre {
+    position: relative;
+}
+
+/* 右上角语言标签留空，避免和复制按钮打架 */
+.markdown-section pre[data-lang]::after {
+    opacity: 0.35;
+}
+
+.code-copy {
+    position: absolute;
+    right: 0.6rem;
+    bottom: 0.55rem;
+    padding: 0.22em 0.7em;
+    border: 1px solid var(--border-color);
+    border-radius: 100vh;
+    background: var(--color-bg);
+    color: var(--color-mono-6);
+    font-family: var(--font-family);
+    font-size: 12px;
+    line-height: 1.6;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+pre:hover .code-copy,
+.code-copy:focus-visible,
+.code-copy.is-done {
+    opacity: 1;
+}
+
+.code-copy:hover {
+    border-color: var(--theme-color);
+    color: var(--theme-color);
+}
+
+/* 触屏设备没有 hover，直接常显 */
+@media (hover: none) {
+    .code-copy {
+        opacity: 0.75;
+    }
+}
+
+/* 6. 提示块 / 引用 / 表格 / 图片
+   ========================================================================== */
+.markdown-section .callout {
+    font-size: 0.96em;
+}
+
+.markdown-section blockquote {
+    font-size: 0.98em;
+}
+
+.markdown-section table {
+    display: block;
+    overflow-x: auto;
+    width: 100%;
+}
+
+.markdown-section img {
+    border-radius: 8px;
+}
+
+/* 7. 右下角浮动工具（主题切换 / 回到顶部）
+   ========================================================================== */
+.site-tools {
+    position: fixed;
+    right: 20px;
+    bottom: 22px;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.site-tool {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    background: var(--color-bg);
+    color: var(--color-mono-6);
+    box-shadow: 0 3px 12px -4px rgb(0 0 0 / 0.25);
+    cursor: pointer;
+    transition: opacity 0.2s ease, visibility 0.2s ease, color 0.15s ease,
+        border-color 0.15s ease, transform 0.15s ease;
+}
+
+.site-tool:hover {
+    border-color: var(--theme-color);
+    color: var(--theme-color);
+}
+
+.site-tool svg {
+    display: block;
+    width: 19px;
+    height: 19px;
+}
+
+.theme-toggle .icon-sun {
+    display: none;
+}
+
+html[data-theme="dark"] .theme-toggle .icon-sun {
+    display: block;
+}
+
+html[data-theme="dark"] .theme-toggle .icon-moon {
+    display: none;
+}
+
+.back-to-top {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(6px);
+}
+
+.back-to-top.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+}
+
+/* 8. 响应式
+   ========================================================================== */
+@media (max-width: 768px) {
+    :root {
+        --content-margin-inline: 20px;
+    }
+
+    .markdown-section h1 {
+        padding-bottom: 0.3em;
+    }
+
+    .site-tools {
+        right: 14px;
+        bottom: 16px;
+    }
+
+    .site-tool {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+/* 9. 无障碍 & 打印
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+@media print {
+    .site-tools,
+    .app-nav,
+    .sidebar,
+    .code-copy {
+        display: none !important;
+    }
+
+    .markdown-section {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+    }
+}
